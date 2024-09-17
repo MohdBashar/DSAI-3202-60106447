@@ -7,7 +7,7 @@ def join_random_letters():
     letters = [random.choice(string.ascii_letters) for _ in range(10000)]
 
     joined_letters = ''.join(letters)
-    return joined_lettersgit pus
+    return joined_letters
 
 def join_random_numbers():
 
