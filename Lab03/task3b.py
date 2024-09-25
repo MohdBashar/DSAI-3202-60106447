@@ -7,8 +7,8 @@ def calculate_sum_for_threads(start :int = 0, end: int = 10, results_list =[]):
         thread_result += i
     results_list.append(thread_result)
 
-n = int(1e8)
-number_threads = 3
+n = int(1000)
+number_threads = 4
 step = n // number_threads #integer division
 
 threads =[]
