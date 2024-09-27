@@ -59,6 +59,8 @@ efficiency_threading = calculate_efficiency(speedup_threading, number_threads)
 print(f"Speedup (Threading): {speedup_threading:.4f}")
 print(f"Efficiency (Threading): {efficiency_threading:.4f}")
 
+total_time = seq_time+parallel_time
+P = parallel_time/total_time
 
 
 def amdahl_speedup(P, num_threads):
@@ -66,10 +68,7 @@ def amdahl_speedup(P, num_threads):
     P is the fraction of the program that can be parallelized."""
     return 1 / ((1 - P) + (P / num_threads))
 
-# Example: Suppose 90% of the program can be parallelized
-P = 0.9  # 90% of the task is parallelizable
-speedup_amdahl = amdahl_speedup(P, num_threads)
-
+speedup_amdahl = amdahl_speedup(P, number_threads)
 print(f"Speedup using Amdahl's Law: {speedup_amdahl:.4f}")
 
 
