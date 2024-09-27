@@ -31,13 +31,47 @@ for i in range(number_threads):
 
 end_time = time.time()
 
+parallel_time = start_time-end_time
+
 print("The total time taken for parallel execution is: " + str(end_time - start_time))
 
 
 start_seq_time = time.time()
 calculate_sum_for_threads(end = int(100000))
 end_seq_time = time.time()
+
+seq_time = start_seq_time/end_seq_time
+
 print("The total time taken for sequential execution is: " + str(end_seq_time - start_seq_time))
+
+
+def calculate_speedup(sequential_time, parallel_time):
+    """Calculate the speedup of the parallel version."""
+    return seq_time / parallel_time
+
+def calculate_efficiency(speedup, num_threads):
+    """Calculate the efficiency of the parallel version."""
+    return speedup / num_threads
+
+speedup_threading = calculate_speedup(seq_time, parallel_time)
+efficiency_threading = calculate_efficiency(speedup_threading, number_threads)
+
+print(f"Speedup (Threading): {speedup_threading:.4f}")
+print(f"Efficiency (Threading): {efficiency_threading:.4f}")
+
+
+
+def amdahl_speedup(P, num_threads):
+    """Calculate speedup using Amdahl's Law.
+    P is the fraction of the program that can be parallelized."""
+    return 1 / ((1 - P) + (P / num_threads))
+
+# Example: Suppose 90% of the program can be parallelized
+P = 0.9  # 90% of the task is parallelizable
+speedup_amdahl = amdahl_speedup(P, num_threads)
+
+print(f"Speedup using Amdahl's Law: {speedup_amdahl:.4f}")
+
 
 
 # import time
