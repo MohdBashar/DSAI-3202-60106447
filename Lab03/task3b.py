@@ -15,13 +15,14 @@ threads =[]
 results = []
 
 for i in range(number_threads):
+    start_time = time.time()
+
     start_thread = i * step +1
     end_thread = (i+1)* step
     thread = threading.Thread(target = calculate_sum_for_threads, args=(start_thread, end_thread, results))
     threads.append(thread) #append the completed thread to the threads list
     print(threads)
 
-start_time = time.time()
 
 for i in range(number_threads):
     threads[i].start()
@@ -31,8 +32,6 @@ for i in range(number_threads):
 
 end_time = time.time()
 
-parallel_time = start_time-end_time
-
 print("The total time taken for parallel execution is: " + str(end_time - start_time))
 
 
@@ -40,9 +39,11 @@ start_seq_time = time.time()
 calculate_sum_for_threads(end = int(100000))
 end_seq_time = time.time()
 
-seq_time = start_seq_time/end_seq_time
 
 print("The total time taken for sequential execution is: " + str(end_seq_time - start_seq_time))
+
+parallel_time = end_time-start_time
+seq_time = end_seq_time-start_seq_time
 
 
 def calculate_speedup(sequential_time, parallel_time):
@@ -62,14 +63,8 @@ print(f"Efficiency (Threading): {efficiency_threading:.4f}")
 total_time = seq_time+parallel_time
 P = parallel_time/total_time
 
-
-def amdahl_speedup(P, num_threads):
-    """Calculate speedup using Amdahl's Law.
-    P is the fraction of the program that can be parallelized."""
-    return 1 / ((1 - P) + (P / num_threads))
-
-speedup_amdahl = amdahl_speedup(P, number_threads)
-print(f"Speedup using Amdahl's Law: {speedup_amdahl:.4f}")
+print(f"Speedup using Amdahl's Law:" , 1/((1-P)+(P/number_threads)))
+print ("Sppedup using Gustafson's speedup: ", ((1-P)+(4*P)))
 
 
 
