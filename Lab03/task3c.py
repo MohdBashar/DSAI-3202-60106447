@@ -1,0 +1,43 @@
+import multiprocessing
+import multiprocessing.process
+import time
+
+# Make a program which calculates sum for each indivitual process, when we call it in the processing. 
+# Then make sure that each result of each indivitual process is appended to the list !
+
+def calculate_sum_for_process(start : int = 0, stop: int = 10, result_list = [] ):
+    process_result = 0
+    for i in range(start, stop):
+        process_result += i
+    result_list.append(process_result)
+
+n = int(1e7)
+num_processes = 4
+processes = []
+result = []
+chunk_size = n // num_processes  #ie the number divided to each process indivitually chunks.
+
+for i in range(num_processes):
+    start_process = i * chunk_size + 1 # starts from 1
+    end_process = (i+1) * chunk_size # ends at the last chunk number 
+    process = multiprocessing.Process(target = calculate_sum_for_process, args = (start_process, end_process, result))
+    processes.append(process) #append the completed process to the list
+    print(processes)
+
+
+start_time = time.time()
+
+for i in range(num_processes):
+    processes[i].start()  #starting each of the process that is stored in the processes list
+
+for i in range(num_processes):
+    processes[i].join()  #waiting until the process has finished.
+
+end_time = time.time()
+print("The total time taken for parallel execution is: " + str(end_time - start_time))
+
+start_seq_time = time.time()
+calculate_sum_for_process(stop = int(1e7))
+end_seq_time = time.time()
+print("The total time taken for sequential execution is: " + str(end_seq_time - start_seq_time))
+

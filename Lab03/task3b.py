@@ -7,7 +7,7 @@ def calculate_sum_for_threads(start :int = 0, end: int = 10, results_list =[]):
         thread_result += i
     results_list.append(thread_result)
 
-n = int(1000)
+n = int(100000)
 number_threads = 4
 step = n // number_threads #integer division
 
@@ -35,7 +35,7 @@ print("The total time taken for parallel execution is: " + str(end_time - start_
 
 
 start_seq_time = time.time()
-calculate_sum_for_threads(end = int(1e8))
+calculate_sum_for_threads(end = int(100000))
 end_seq_time = time.time()
 print("The total time taken for sequential execution is: " + str(end_seq_time - start_seq_time))
 
