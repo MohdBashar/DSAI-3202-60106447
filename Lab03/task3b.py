@@ -39,6 +39,7 @@ calculate_sum_for_threads(end = int(1e8))
 end_seq_time = time.time()
 print("The total time taken for sequential execution is: " + str(end_seq_time - start_seq_time))
 
+
 # import time
 # import threading
 
