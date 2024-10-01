@@ -1,67 +1,83 @@
 import time
 import threading
 
-def calculate_sum_for_threads(start :int = 0, end: int = 10, results_list =[]):
+def calculate_sum_for_threads(start: int = 0, end: int = 10, results_list=[]):
+    """
+    Function to calculate the sum of numbers within a given range (start to end) 
+    and store the result in the results_list.
+
+    Args:
+        start (int): Starting number for the range (inclusive).
+        end (int): Ending number for the range (inclusive).
+        results_list (list): List to store the result from each thread.
+    """
     thread_result = 0
-    for i in range(start, end+1):
+    for i in range(start, end + 1):
         thread_result += i
-    results_list.append(thread_result)
+    results_list.append(thread_result)  # Append the result to the shared list
 
-n = int(100000000)
-number_threads = 4
-step = n // number_threads #integer division
+# Main Program
+if __name__ == "__main__":
+    n = int(1e8)  # Large number to sum up to
+    number_threads = 4  # Number of threads
+    step = n // number_threads  # Divide the range into equal chunks
 
-threads =[]
-results = []
+    threads = []  # List to store thread objects
+    results = []  # List to store the sum results from each thread
 
-for i in range(number_threads):
-    start_time = time.time()
+    # Create and start threads
+    for i in range(number_threads):
+        start_time = time.time()  # Record the start time for parallel execution
 
-    start_thread = i * step +1
-    end_thread = (i+1)* step
-    thread = threading.Thread(target = calculate_sum_for_threads, args=(start_thread, end_thread, results))
-    threads.append(thread) #append the completed thread to the threads list
-    print(threads)
+        start_thread = i * step + 1
+        end_thread = (i + 1) * step
+        thread = threading.Thread(target=calculate_sum_for_threads, args=(start_thread, end_thread, results))
+        threads.append(thread)  # Append each thread to the threads list
+        print(threads)
 
+    # Start each thread
+    for i in range(number_threads):
+        threads[i].start()
 
-for i in range(number_threads):
-    threads[i].start()
+    # Wait for all threads to finish
+    for i in range(number_threads):
+        threads[i].join()
 
-for i in range(number_threads):
-    threads[i].join()
+    end_time = time.time()  # Record the end time for parallel execution
 
-end_time = time.time()
+    print("The total time taken for parallel execution is: " + str(end_time - start_time))
 
-print("The total time taken for parallel execution is: " + str(end_time - start_time))
+    # Sequential execution for comparison
+    start_seq_time = time.time()
+    calculate_sum_for_threads(end=int(1e8))  # Perform summation sequentially
+    end_seq_time = time.time()
 
+    print("The total time taken for sequential execution is: " + str(end_seq_time - start_seq_time))
 
-start_seq_time = time.time()
-calculate_sum_for_threads(end = int(100000000))
-end_seq_time = time.time()
+    # Calculate performance metrics
+    parallel_time = end_time - start_time
+    seq_time = end_seq_time - start_seq_time
 
+    # Calculate the sum from all threads
+    thread_sum = sum(results)
+    print("The total sum of the threading is: ", thread_sum)
 
-print("The total time taken for sequential execution is: " + str(end_seq_time - start_seq_time))
+    # Calculate speedup and efficiency
+    speedup_threading = seq_time / parallel_time
+    efficiency_threading = speedup_threading / number_threads
 
-parallel_time = end_time-start_time
-seq_time = end_seq_time-start_seq_time
+    print(f"Speedup (Threading): {speedup_threading:.4f}")
+    print(f"Efficiency (Threading): {efficiency_threading:.4f}")
 
-thread_sum = sum(results)
-print("The total sum of the threading is: ", thread_sum)
+    # Amdahl's Law and Gustafson's Law calculations
+    total_time = seq_time + parallel_time
+    P = parallel_time / total_time
 
+    # Amdahl's Law
+    print(f"Speedup using Amdahl's Law: ", 1 / ((1 - P) + (P / number_threads)))
 
-speedup_threading = seq_time / parallel_time
-efficiency_threading = speedup_threading/number_threads
-
-
-print(f"Speedup (Threading): {speedup_threading:.4f}")
-print(f"Efficiency (Threading): {efficiency_threading:.4f}")
-
-total_time = seq_time+parallel_time
-P = parallel_time/total_time
-
-print(f"Speedup using Amdahl's Law:" , 1/((1-P)+(P/number_threads)))
-print ("Sppedup using Gustafson's speedup: ", ((1-P)+(4*P)))
-
+    # Gustafson's Law
+    print("Speedup using Gustafson's Law: ", (1 - P) + (number_threads * P))
 
 
 # import time

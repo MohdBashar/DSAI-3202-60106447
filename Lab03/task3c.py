@@ -3,16 +3,26 @@ import time
 
 # Function to calculate the sum for a range of numbers and store it in a shared list
 def calculate_sum_for_process(start: int, stop: int, result_list, index):
+    """
+    Calculate the sum of numbers within a given range (start to stop) 
+    and store the result in a shared list at the specified index.
+
+    Args:
+        start (int): Starting number for the range (inclusive).
+        stop (int): Ending number for the range (inclusive).
+        result_list (list): Shared list to store the results from different processes.
+        index (int): Index in the shared list where the result of this process will be stored.
+    """
     process_result = sum(range(start, stop + 1))
     result_list[index] = process_result  # Store result in the shared list at the correct index
 
 # Main program
 if __name__ == "__main__":
-    n = int(1e8)  # Large number
+    n = int(1e8)  # Large number to sum up to
     num_processes = 4  # Number of processes
     chunk_size = n // num_processes  # Divide the range into equal chunks
 
-    # Create a manager to handle shared memory
+    # Create a manager to handle shared memory between processes
     with multiprocessing.Manager() as manager:
         result = manager.list([0] * num_processes)  # Shared list to store the results of each process
         processes = []
@@ -50,19 +60,39 @@ if __name__ == "__main__":
         print(f"Sequential Sum: {sequential_sum}")
         print("The total time taken for sequential execution is: " + str(end_seq_time - start_seq_time))
 
-        # Performance metrics
+        # Calculate execution times
         seq_time = end_seq_time - start_seq_time
         parallel_time = end_time - start_time
 
+        # Helper function to calculate speedup
         def calculate_speedup(sequential_time, parallel_time):
-            """Calculate the speedup of the parallel version."""
+            """
+            Calculate the speedup of the parallel version compared to the sequential version.
+
+            Args:
+                sequential_time (float): Time taken for the sequential execution.
+                parallel_time (float): Time taken for the parallel execution.
+
+            Returns:
+                float: The speedup of the parallel execution.
+            """
             return sequential_time / parallel_time
 
+        # Helper function to calculate efficiency
         def calculate_efficiency(speedup, number_processes):
-            """Calculate the efficiency of the parallel version."""
+            """
+            Calculate the efficiency of the parallel version.
+
+            Args:
+                speedup (float): The speedup achieved by parallel execution.
+                number_processes (int): The number of processes used for parallel execution.
+
+            Returns:
+                float: The efficiency of the parallel execution.
+            """
             return speedup / number_processes
 
-        # Compute speedup and efficiency
+        # Compute speedup and efficiency for parallel execution
         speedup_parallel = calculate_speedup(seq_time, parallel_time)
         efficiency_parallel = calculate_efficiency(speedup_parallel, num_processes)
 
@@ -72,11 +102,11 @@ if __name__ == "__main__":
         # Amdahl's Law and Gustafson's Law calculations
         P = parallel_time / (seq_time + parallel_time)
 
-        # Amdahl's Law
+        # Calculate speedup using Amdahl's Law
         speedup_amdahl = 1 / ((1 - P) + (P / num_processes))
         print(f"Speedup using Amdahl's Law: {speedup_amdahl:.4f}")
 
-        # Gustafson's Law
+        # Calculate speedup using Gustafson's Law
         speedup_gustafson = (1 - P) + (num_processes * P)
         print(f"Speedup using Gustafson's Law: {speedup_gustafson:.4f}")
 
