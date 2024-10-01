@@ -3,7 +3,7 @@ import threading
 
 def calculate_sum_for_threads(start :int = 0, end: int = 10, results_list =[]):
     thread_result = 0
-    for i in range(start, end):
+    for i in range(start, end+1):
         thread_result += i
     results_list.append(thread_result)
 
@@ -45,7 +45,8 @@ print("The total time taken for sequential execution is: " + str(end_seq_time - 
 parallel_time = end_time-start_time
 seq_time = end_seq_time-start_seq_time
 
-
+thread_sum = sum(results)
+print("The total sum of the threading is: ", thread_sum)
 
 
 speedup_threading = seq_time / parallel_time
