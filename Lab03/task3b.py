@@ -7,7 +7,7 @@ def calculate_sum_for_threads(start :int = 0, end: int = 10, results_list =[]):
         thread_result += i
     results_list.append(thread_result)
 
-n = int(100000)
+n = int(100000000)
 number_threads = 4
 step = n // number_threads #integer division
 
@@ -36,7 +36,7 @@ print("The total time taken for parallel execution is: " + str(end_time - start_
 
 
 start_seq_time = time.time()
-calculate_sum_for_threads(end = int(100000))
+calculate_sum_for_threads(end = int(100000000))
 end_seq_time = time.time()
 
 
@@ -46,16 +46,11 @@ parallel_time = end_time-start_time
 seq_time = end_seq_time-start_seq_time
 
 
-def calculate_speedup(sequential_time, parallel_time):
-    """Calculate the speedup of the parallel version."""
-    return seq_time / parallel_time
 
-def calculate_efficiency(speedup, num_threads):
-    """Calculate the efficiency of the parallel version."""
-    return speedup / num_threads
 
-speedup_threading = calculate_speedup(seq_time, parallel_time)
-efficiency_threading = calculate_efficiency(speedup_threading, number_threads)
+speedup_threading = seq_time / parallel_time
+efficiency_threading = speedup_threading/number_threads
+
 
 print(f"Speedup (Threading): {speedup_threading:.4f}")
 print(f"Efficiency (Threading): {efficiency_threading:.4f}")

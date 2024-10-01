@@ -11,7 +11,7 @@ def calculate_sum_for_process(start : int = 0, stop: int = 10, result_list = [] 
         process_result += i
     result_list.append(process_result)
 
-n = int(1e7)
+n = int(1e8)
 num_processes = 4
 processes = []
 result = []
@@ -39,7 +39,7 @@ print("The total time taken for parallel execution is: " + str(end_time - start_
 
 
 start_seq_time = time.time()
-calculate_sum_for_process(stop = int(1e7))
+calculate_sum_for_process(stop = int(1e8))
 end_seq_time = time.time()
 print("The total time taken for sequential execution is: " + str(end_seq_time - start_seq_time))
 
