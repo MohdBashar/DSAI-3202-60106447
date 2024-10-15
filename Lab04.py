@@ -112,3 +112,20 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+
+
+# 4. Questions:
+# 1) Why did the professor not ask you to compute metrics?
+# Answer: I think the main aim of this lab is for me to learn how to manage concurrent tasks, use threads, locks, and synchronize shared resources efficiently.
+
+"""
+4. Questions:
+
+1) Why did the professor not ask you to compute metrics?
+
+Answer: 
+I think the main aim of this lab is for me to learn how to manage concurrent tasks,
+use threads, locks, and synchronize shared resources efficiently.
+
+"""
