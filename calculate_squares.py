@@ -34,5 +34,5 @@ def main(n):
         print(f"Time taken: {time.time() - start_time} seconds")
 
 if __name__ == "__main__":
-    n = int(1e8)  # You can set a smaller value for testing
+    n = int(1e6)  # You can set a smaller value for testing
     main(n)
