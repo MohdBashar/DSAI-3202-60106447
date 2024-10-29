@@ -13,14 +13,14 @@ def main(n=int(1e8), bonus_mode=False):
     rank = comm.Get_rank()
     size = comm.Get_size()
 
-    # Start timing
+    # Start timing for main calculation
     if rank == 0:
         start_time = time.time()
 
     # Define main chunk for each process
     chunk_size = n // size
     start = rank * chunk_size + 1
-    end = start + chunk_size if rank < size - 1 else n + 1  # Handle last chunk edge case
+    end = (rank + 1) * chunk_size + 1 if rank < size - 1 else n + 1  # Handle last chunk edge case
 
     # Calculate squares in smaller chunks to avoid memory overload
     local_sum = 0
@@ -44,10 +44,14 @@ def main(n=int(1e8), bonus_mode=False):
         # If in bonus mode, calculate max n for 300 seconds
         if bonus_mode:
             max_n = n
-            while elapsed_time < 300:
-                max_n += int(1e6)
-                elapsed_time = time.time() - start_time
-                print(f"Trying n={max_n} => Time: {elapsed_time:.2f} seconds")
+            bonus_start_time = time.time()  # Start timer specifically for bonus mode
+            print("\nEntering bonus mode...")
+            while True:
+                max_n += int(1e6)  # Increment max_n in steps
+                bonus_elapsed_time = time.time() - bonus_start_time
+                if bonus_elapsed_time >= 300:
+                    break
+                print(f"Trying n={max_n} => Bonus Time: {bonus_elapsed_time:.2f} seconds")
             print(f"Maximum n within 300 seconds: {max_n}")
 
 if __name__ == "__main__":
