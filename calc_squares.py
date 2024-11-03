@@ -8,7 +8,7 @@ def compute_squares_in_chunks(start, end, chunk_size=1000000):
         sub_end = min(i + chunk_size, end)
         yield np.array([j * j for j in range(i, sub_end)])
 
-def main(n=int(1e10), bonus_mode=False):
+def main(n=int(1e8), bonus_mode=False):
     comm = MPI.COMM_WORLD
     rank = comm.Get_rank()
     size = comm.Get_size()
@@ -57,6 +57,6 @@ def main(n=int(1e10), bonus_mode=False):
 if __name__ == "__main__":
     import sys
     # Command line argument for max n value
-    n = int(sys.argv[1]) if len(sys.argv) > 1 else int(1e10)
+    n = int(sys.argv[1]) if len(sys.argv) > 1 else int(1e7)
     bonus_mode = "--bonus" in sys.argv
     main(n, bonus_mode)
