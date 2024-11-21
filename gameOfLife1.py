@@ -33,7 +33,7 @@ rank = comm.Get_rank()
 size = comm.Get_size()
 
 # Define the grid dimensions
-grid_rows, grid_cols = 100, 100
+grid_rows, grid_cols = 120, 120
 rows_per_process = grid_rows // size
 
 # Initialize the local grid with random values
@@ -70,5 +70,5 @@ for step in range(num_steps):
         print(f"Step {step + 1}: Full Grid")
         for row in full_grid:
             print("".join("■" if cell else "□" for cell in row))  # Print alive cells as ■ and dead cells as □ 
-        print("\n" + "=" * 100)  # Separator between steps
+        print("\n" + "=" * 120)  # Separator between steps
         print()
